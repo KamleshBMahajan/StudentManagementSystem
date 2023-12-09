@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="StudentDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="batch_Details">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="batch" Type="varbinary" MaxLength="50" />
+          <Property Name="year" Type="varbinary" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="cource_Details">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cource_Name" Type="varchar" MaxLength="50" />
+          <Property Name="duration" Type="int" />
+        </EntityType>
+        <EntityType Name="registration">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="firstname" Type="varchar" MaxLength="50" />
+          <Property Name="lastname" Type="varchar" MaxLength="50" />
+          <Property Name="nic" Type="varchar" MaxLength="50" />
+          <Property Name="cource_id" Type="int" />
+          <Property Name="batch_id" Type="int" />
+          <Property Name="telno" Type="int" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="firstname" Type="varchar" MaxLength="50" />
+          <Property Name="lastname" Type="varchar" MaxLength="50" />
+          <Property Name="username" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_registration_batch_Details">
+          <End Role="batch_Details" Type="Self.batch_Details" Multiplicity="0..1" />
+          <End Role="registration" Type="Self.registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="batch_Details">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="registration">
+              <PropertyRef Name="batch_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_registration_cource_Details">
+          <End Role="cource_Details" Type="Self.cource_Details" Multiplicity="0..1" />
+          <End Role="registration" Type="Self.registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cource_Details">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="registration">
+              <PropertyRef Name="cource_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StudentDataModelStoreContainer">
+          <EntitySet Name="batch_Details" EntityType="Self.batch_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cource_Details" EntityType="Self.cource_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="registration" EntityType="Self.registration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_registration_batch_Details" Association="Self.FK_registration_batch_Details">
+            <End Role="batch_Details" EntitySet="batch_Details" />
+            <End Role="registration" EntitySet="registration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_registration_cource_Details" Association="Self.FK_registration_cource_Details">
+            <End Role="cource_Details" EntitySet="cource_Details" />
+            <End Role="registration" EntitySet="registration" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StudentDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="batch_Details">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="batch" Type="Binary" MaxLength="50" FixedLength="false" />
+          <Property Name="year" Type="Binary" MaxLength="50" FixedLength="false" />
+          <NavigationProperty Name="registrations" Relationship="Self.FK_registration_batch_Details" FromRole="batch_Details" ToRole="registration" />
+        </EntityType>
+        <EntityType Name="cource_Details">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cource_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="duration" Type="Int32" />
+          <NavigationProperty Name="registrations" Relationship="Self.FK_registration_cource_Details" FromRole="cource_Details" ToRole="registration" />
+        </EntityType>
+        <EntityType Name="registration">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cource_id" Type="Int32" />
+          <Property Name="batch_id" Type="Int32" />
+          <Property Name="telno" Type="Int32" />
+          <NavigationProperty Name="batch_Details" Relationship="Self.FK_registration_batch_Details" FromRole="registration" ToRole="batch_Details" />
+          <NavigationProperty Name="cource_Details" Relationship="Self.FK_registration_cource_Details" FromRole="registration" ToRole="cource_Details" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_registration_batch_Details">
+          <End Role="batch_Details" Type="Self.batch_Details" Multiplicity="0..1" />
+          <End Role="registration" Type="Self.registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="batch_Details">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="registration">
+              <PropertyRef Name="batch_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_registration_cource_Details">
+          <End Role="cource_Details" Type="Self.cource_Details" Multiplicity="0..1" />
+          <End Role="registration" Type="Self.registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cource_Details">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="registration">
+              <PropertyRef Name="cource_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StudentDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="batch_Details" EntityType="Self.batch_Details" />
+          <EntitySet Name="cource_Details" EntityType="Self.cource_Details" />
+          <EntitySet Name="registrations" EntityType="Self.registration" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK_registration_batch_Details" Association="Self.FK_registration_batch_Details">
+            <End Role="batch_Details" EntitySet="batch_Details" />
+            <End Role="registration" EntitySet="registrations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_registration_cource_Details" Association="Self.FK_registration_cource_Details">
+            <End Role="cource_Details" EntitySet="cource_Details" />
+            <End Role="registration" EntitySet="registrations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StudentDataModelStoreContainer" CdmEntityContainer="StudentDataEntities">
+          <EntitySetMapping Name="batch_Details">
+            <EntityTypeMapping TypeName="StudentDataModel.batch_Details">
+              <MappingFragment StoreEntitySet="batch_Details">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="batch" ColumnName="batch" />
+                <ScalarProperty Name="year" ColumnName="year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cource_Details">
+            <EntityTypeMapping TypeName="StudentDataModel.cource_Details">
+              <MappingFragment StoreEntitySet="cource_Details">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cource_Name" ColumnName="cource_Name" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="registrations">
+            <EntityTypeMapping TypeName="StudentDataModel.registration">
+              <MappingFragment StoreEntitySet="registration">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="nic" ColumnName="nic" />
+                <ScalarProperty Name="cource_id" ColumnName="cource_id" />
+                <ScalarProperty Name="batch_id" ColumnName="batch_id" />
+                <ScalarProperty Name="telno" ColumnName="telno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="StudentDataModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

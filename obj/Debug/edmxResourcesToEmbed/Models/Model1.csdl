@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StudentDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="batch_Details">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="batch" Type="Binary" MaxLength="50" FixedLength="false" />
+    <Property Name="year" Type="Binary" MaxLength="50" FixedLength="false" />
+    <NavigationProperty Name="registrations" Relationship="Self.FK_registration_batch_Details" FromRole="batch_Details" ToRole="registration" />
+  </EntityType>
+  <EntityType Name="cource_Details">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cource_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="duration" Type="Int32" />
+    <NavigationProperty Name="registrations" Relationship="Self.FK_registration_cource_Details" FromRole="cource_Details" ToRole="registration" />
+  </EntityType>
+  <EntityType Name="registration">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="nic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cource_id" Type="Int32" />
+    <Property Name="batch_id" Type="Int32" />
+    <Property Name="telno" Type="Int32" />
+    <NavigationProperty Name="batch_Details" Relationship="Self.FK_registration_batch_Details" FromRole="registration" ToRole="batch_Details" />
+    <NavigationProperty Name="cource_Details" Relationship="Self.FK_registration_cource_Details" FromRole="registration" ToRole="cource_Details" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_registration_batch_Details">
+    <End Role="batch_Details" Type="Self.batch_Details" Multiplicity="0..1" />
+    <End Role="registration" Type="Self.registration" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="batch_Details">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="registration">
+        <PropertyRef Name="batch_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_registration_cource_Details">
+    <End Role="cource_Details" Type="Self.cource_Details" Multiplicity="0..1" />
+    <End Role="registration" Type="Self.registration" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cource_Details">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="registration">
+        <PropertyRef Name="cource_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="StudentDataEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="batch_Details" EntityType="Self.batch_Details" />
+    <EntitySet Name="cource_Details" EntityType="Self.cource_Details" />
+    <EntitySet Name="registrations" EntityType="Self.registration" />
+    <EntitySet Name="users" EntityType="Self.user" />
+    <AssociationSet Name="FK_registration_batch_Details" Association="Self.FK_registration_batch_Details">
+      <End Role="batch_Details" EntitySet="batch_Details" />
+      <End Role="registration" EntitySet="registrations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_registration_cource_Details" Association="Self.FK_registration_cource_Details">
+      <End Role="cource_Details" EntitySet="cource_Details" />
+      <End Role="registration" EntitySet="registrations" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
